@@ -1,0 +1,62 @@
+class ModelsFlyweight:
+    def __init__(self, body_model):
+        self.body_model = body_model
+
+    def draw_single_model(self, head):
+        # This method draws model of soldier using shared body model and unique head model.
+        pass
+
+
+class FlyweightFactory:
+    """This method creates flyweights and manages them. We initialize some flyweights when a battle starts,
+       but we can create a new one if needed."""
+
+    models_flyweights = dict()
+
+    def __init__(self, unit_types):
+        for unit_type in unit_types:
+            self.models_flyweights[unit_type.body] = ModelsFlyweight(unit_type.body)
+
+    def get_flyweight(self, unit_type):
+        if not self.models_flyweights.get(unit_type.body):
+            self.models_flyweights[unit_type.body] = ModelsFlyweight(unit_type.body)
+        return self.models_flyweights[unit_type.body]
+
+
+def get_unit_types():
+    # Get list of all units for battle
+    pass
+
+
+def create_head():
+    # Create unique head for each soldier
+    pass
+
+
+def get_reinforcements():
+    # Add some new units to battle if needed
+    pass
+
+
+def draw_unit(size, factory, unit_type, head):
+    # draws nubmer of models demanding on size param
+    for number in range(size):
+        model = factory(unit_type.body)
+        yield model.draw_single_model(head)
+
+
+def draw_all_units(unit_types_list, size, factory):
+    for unit_type in unit_types_list:
+        head = create_head()
+        draw_unit(size, factory, unit_type, head)
+
+
+def main(size, has_reinforcements=False):
+    factory = FlyweightFactory(get_unit_types())
+    draw_all_units(get_unit_types(), factory, size)
+    # if player or computer will get reinforcements
+    # we will use the same code
+    if has_reinforcements:
+        draw_all_units(get_reinforcements(), factory, size)
+
+
