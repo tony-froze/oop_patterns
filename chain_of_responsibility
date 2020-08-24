@@ -1,0 +1,49 @@
+from abc import ABC, abstractmethod
+
+
+class AbstractHandler(ABC):
+    next_handler = None
+
+    def set_next_handler(self, handler):
+        self.next_handler = handler
+
+    @abstractmethod
+    def handle(self, argument):
+        pass
+
+
+class StrHandler(AbstractHandler):
+    def handle(self, argument):
+        if isinstance(argument, str):
+            print('String')
+            argument = list(argument)
+            self.set_next_handler(FinalHandler())
+        else:
+            self.set_next_handler(IntHandler())
+
+        self.next_handler.handle(argument)
+
+
+class IntHandler(AbstractHandler):
+    def handle(self, argument):
+        if isinstance(argument, int):
+            print('Integer')
+            argument = list(str(argument))
+            self.set_next_handler(FinalHandler())
+            self.next_handler.handle(argument)
+        else:
+            print('Unknown argument type')
+
+
+class FinalHandler(AbstractHandler):
+    def handle(self, argument):
+        print('Result')
+        for item in argument:
+            print(item)
+
+
+if __name__ == '__main__':
+    str_handler = StrHandler()
+    arguments = ['123', 321, [1, 2, '3']]
+    for argument in arguments:
+        str_handler.handle(argument)
