@@ -1,0 +1,25 @@
+class Ints:
+    def __init__(self, value):
+        self.value = float(value)
+
+    def __add__(self, other):
+        return self.value + other
+
+
+class StrInts:
+    def __init__(self, value):
+        self.value = str(value)
+
+    def __radd__(self, other):
+        return other + self.value
+
+
+class Adapter(Ints, StrInts):
+    def __init__(self, value):
+        self.value = int(value)
+
+
+if __name__ == '__main__':
+    a = Ints('2')
+    b = Adapter(StrInts(3).value)
+    print(a+b)
