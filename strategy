@@ -1,0 +1,44 @@
+class Context:
+
+    def __init__(self, strategy):
+
+        self._strategy = strategy
+
+    @property
+    def strategy(self):
+
+        return self._strategy
+
+    @strategy.setter
+    def strategy(self, strategy):
+
+        self._strategy = strategy
+
+    def changer(self):
+
+        self._strategy.execute('Dart Weider')
+
+
+class Lower:
+    def execute(self, string):
+        print(string.lower())
+
+
+class Upper:
+    def execute(self, string):
+        print(string.upper())
+
+
+class Capitalize:
+    def execute(self, string):
+        print(string.capitalize())
+
+
+if __name__ == '__main__':
+    context = Context(Lower())
+    context.changer()
+    context.strategy = Upper()
+    context.changer()
+    context.strategy = Capitalize()
+    context.changer()
+
