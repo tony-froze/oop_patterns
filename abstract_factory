@@ -1,0 +1,96 @@
+from abc import ABC, abstractmethod
+
+
+class Producer(ABC):
+
+    @abstractmethod
+    def create_frontman(self):
+        pass
+
+    @abstractmethod
+    def create_group(self):
+        pass
+
+
+class Frontman(ABC):
+
+    @abstractmethod
+    def sing_a_song(self):
+        pass
+
+    @abstractmethod
+    def stop_for_solo(self, group):
+        pass
+
+
+class Group(ABC):
+
+    @abstractmethod
+    def instruments(self):
+        pass
+
+
+class RussianGroup(Producer):
+
+    def create_frontman(self):
+        return TemBulatov()
+
+    def create_group(self):
+        return Lumen()
+
+
+class GermanGroup(Producer):
+
+    def create_frontman(self):
+        return MaxRaabe()
+
+    def create_group(self):
+        return PalastOrchester()
+
+
+class MaxRaabe(Frontman):
+
+    def sing_a_song(self):
+        print('Oops, I did it again')
+
+    def stop_for_solo(self, group):
+        print(group.instruments()[4])
+
+
+class PalastOrchester(Group):
+
+    def instruments(self):
+        return ['guitar', 'trombone', 'drums', 'saxophone', 'violin']
+
+
+class TemBulatov(Frontman):
+
+    def sing_a_song(self):
+        print('Назови мне своё имя')
+
+    def stop_for_solo(self, group):
+        print(group.instruments()[0])
+
+
+class Lumen(Group):
+
+    def instruments(self):
+        return ['guitar', 'drums']
+
+
+def concert_hall(producer):
+    group = producer.create_group()
+    frontman = producer.create_frontman()
+
+    frontman.sing_a_song()
+    frontman.stop_for_solo(group)
+
+
+if __name__ == '__main__':
+
+    concert_hall(RussianGroup())
+
+    print('Антракт')
+
+    concert_hall(GermanGroup())
+
