@@ -1,0 +1,32 @@
+class Player:
+    def __init__(self):
+        self.inventory = []
+
+    def take_item(self, facade, item_id):
+        self.inventory.append(facade.take_item(item_id))
+
+
+class Environment:
+    def __init__(self):
+        # I choose list for its simplicity. I understand that it's not good decision for real script))
+        self.all_items = ['list', 'of', 'all', 'items', 'in', 'the', 'location']
+
+    def check_owner(self, item_id):
+        pass
+
+    def check_weight(self, item_id):
+        pass
+
+    # ... many checks, methods and so on
+
+
+class Facade:
+    def __init__(self):
+        self.environment = Environment()
+
+    def take_item(self, item_id):
+        if self.environment.check_owner(item_id) and self.environment.check_weight[item_id]:
+            # do all necessary to delete item from the location
+            return self.environment.all_items.pop(item_id)
+        else:
+            print('Unable  to  take this!')
