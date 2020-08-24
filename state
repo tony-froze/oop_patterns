@@ -1,0 +1,59 @@
+from abc import ABC, abstractmethod
+
+
+class Unit:
+    state = None
+
+    def __init__(self, state):
+        self.change_state(state)
+
+    def change_state(self, state):
+        self.state = state
+        self.context = self
+
+    def attack(self, position):
+        self.state.attack(position)
+
+    def move_to(self, position):
+        self.state.move_to(position)
+
+
+class State(ABC):
+    @property
+    def context(self):
+        return self.context
+
+    @context.setter
+    def context(self, context):
+        self.context = context
+
+    @abstractmethod
+    def attack(self, position):
+        pass
+
+    @abstractmethod
+    def move_to(self, position):
+        pass
+
+
+class ReadyState(State):
+    def attack(self, position):
+        # attack chosen enemy unit
+        self.context.change_state(InBattle())
+
+    def move_to(self, position):
+        # go to chosen position
+        pass
+
+
+class InBattle(State):
+    def attack(self, position):
+        # can't attack when already fights
+        print('We are quite busy now!')
+
+    def move_to(self, position):
+        # retreat to nearest empty position, not to selected
+        self.context.change_state(ReadyState())
+
+
+
