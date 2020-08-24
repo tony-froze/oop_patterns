@@ -1,0 +1,65 @@
+"""Examples of singleton."""
+
+
+class Singleton:
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        """ Static access method. """
+        if Singleton.__instance == None:
+            Singleton()
+        return Singleton.__instance
+
+    def __init__(self):
+        """ Virtually private constructor. """
+        if Singleton.__instance != None:
+            raise Exception("This class is a singleton!")
+        else:
+            Singleton.__instance = self
+
+
+s = Singleton()
+print(s)
+
+s = Singleton.getInstance()
+print(s)
+
+s = Singleton.getInstance()
+print(s)
+
+
+class NewSingleton(object):
+    def __new__(cls):
+        if not hasattr(cls, 'instance') or not cls.instance:
+            cls.instance = super().__new__(cls)
+
+        return cls.instance
+
+
+obj1 = NewSingleton()
+obj2 = NewSingleton()
+
+print(obj1 is obj2)  # True
+print(obj1 == obj2)  # True
+print(type(obj1) == type(obj2))  # True
+print(id(obj1) == id(obj2))  # True
+
+
+class SingltonMeta(type):
+    _instances = dict()
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super().__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class TestSingletonMeta(metaclass=SingltonMeta):
+    pass
+
+
+test1 = TestSingletonMeta()
+test2 = TestSingletonMeta()
+
+print(test1, test2)
